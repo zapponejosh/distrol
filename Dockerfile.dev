@@ -1,0 +1,4 @@
+FROM debian:buster
+RUN apt-get update --fix-missing && \
+  apt-get install -yqq \
+  ca-certificates
