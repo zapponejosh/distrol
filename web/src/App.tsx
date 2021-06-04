@@ -1,26 +1,45 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import * as React from "react";
+import {
+  ChakraProvider,
+  Box,
+  Text,
+  VStack,
+  Grid,
+  theme,
+  StackDivider,
+  Icon,
+} from "@chakra-ui/react";
+import { FaListAlt } from "react-icons/fa";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+import Layout from "./components/Layouts/Layout";
+import Header from "./components/Header";
+import BuilderPage from "./pages/BuilderPage";
 
-export default App;
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+const Main = () => (
+  <Box textAlign="center" fontSize="xl">
+    <Grid minH="100vh" p={3}>
+      <VStack spacing={8} divider={<StackDivider borderColor="gray.200" />}>
+        <Icon h="20vmin" w="auto" as={FaListAlt} />
+        <Text>A simple, fast, and private social newsletter.</Text>
+      </VStack>
+    </Grid>
+  </Box>
+);
+
+export const App = () => (
+  <>
+    <ChakraProvider theme={theme}>
+      <Router>
+        <Header />
+        <Layout>
+          <Routes>
+            <Route path="/" element={<Main />} />
+            <Route path="/create" element={<BuilderPage />} />
+          </Routes>
+        </Layout>
+      </Router>
+    </ChakraProvider>
+  </>
+);
