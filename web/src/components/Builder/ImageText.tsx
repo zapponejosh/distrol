@@ -1,8 +1,16 @@
+import { Box, SkeletonCircle, SkeletonText } from "@chakra-ui/react";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 const ImageText = () => {
-  return <div>Placeholder</div>;
+  return (
+    <>
+      <Box maxW="600px" padding="6" boxShadow="lg" bg="gray">
+        <SkeletonCircle size="100" />
+        <SkeletonText mt="4" noOfLines={1} spacing="4" />
+      </Box>
+    </>
+  );
 };
 
 export default ImageText;
