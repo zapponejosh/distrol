@@ -1,7 +1,7 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
-import { Button, Divider, Input, Select } from "@chakra-ui/react";
+import { Button, ButtonGroup, Divider, Input, Select } from "@chakra-ui/react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { ActionCreators } from "redux-undo";
 import {
   addBlock,
   deleteBlock,
@@ -12,8 +12,11 @@ import Headline from "../components/Builder/Headline";
 import ImageText from "../components/Builder/ImageText";
 
 const BuilderPage = () => {
-  const blocks = useAppSelector((state) => state.blocks);
+  const blocks = useAppSelector((state) => state.blocks.present);
   const [newBlock, setNewBlock] = React.useState("");
+
+  const future = useAppSelector((state) => state.blocks.future);
+  const past = useAppSelector((state) => state.blocks.past);
 
   const dispatch = useAppDispatch();
 
@@ -68,8 +71,18 @@ const BuilderPage = () => {
                 </Button>
               </td>
               <td>
-                <Button onClick={(e) => handleMove(i, "up")}>Up</Button>
-                <Button onClick={(e) => handleMove(i, "down")}>Down</Button>
+                <Button
+                  disabled={!!(i === 0)}
+                  onClick={(e) => handleMove(i, "up")}
+                >
+                  Up
+                </Button>
+                <Button
+                  disabled={!!(i === blocks.length - 1)}
+                  onClick={(e) => handleMove(i, "down")}
+                >
+                  Down
+                </Button>
               </td>
             </tr>
           ))}
@@ -87,10 +100,21 @@ const BuilderPage = () => {
         <option value="image-caption">Image with caption</option>
         <option value="headline">Headline</option>
       </Select>
-
-      <Button m="20px 0" onClick={handleClick}>
-        +Add block
-      </Button>
+      <ButtonGroup m="20px 0">
+        <Button onClick={handleClick}>+Add block</Button>
+        <Button
+          disabled={!past.length}
+          onClick={() => dispatch(ActionCreators.undo())}
+        >
+          Undo
+        </Button>
+        <Button
+          disabled={!future.length}
+          onClick={() => dispatch(ActionCreators.redo())}
+        >
+          Redo
+        </Button>
+      </ButtonGroup>
       <Divider orientation="horizontal" m="20px 0" />
       {blocks.map((b, i) => {
         switch (b.type) {
