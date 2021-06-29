@@ -1,5 +1,4 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 import { Flex, Box } from "@chakra-ui/react";
 
 const Layout = (props: any) => {

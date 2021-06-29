@@ -1,6 +1,5 @@
 import { Text } from "@chakra-ui/react";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 
 const TextBlock = () => {
   return (

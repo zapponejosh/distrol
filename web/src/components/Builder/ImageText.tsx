@@ -1,6 +1,5 @@
 import { Box, SkeletonCircle, SkeletonText } from "@chakra-ui/react";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 
 const ImageText = () => {
   return (
