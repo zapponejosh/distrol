@@ -2,6 +2,7 @@ import * as React from "react";
 import { Button, ButtonGroup, Divider, Input, Select } from "@chakra-ui/react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { ActionCreators } from "redux-undo";
+import { useHotkeys } from "react-hotkeys-hook";
 import {
   addBlock,
   deleteBlock,
@@ -41,6 +42,23 @@ const BuilderPage = () => {
       case "down":
         dispatch(moveBlock({ direction: 1, index }));
         console.log(direction);
+        break;
+    }
+  };
+
+  // Undo/redo hotkeys
+  useHotkeys("command+z", () => handleHotkey("undo"));
+  useHotkeys("command+shift+z", () => handleHotkey("redo"));
+
+  const handleHotkey = (action: string): void => {
+    switch (action) {
+      case "undo":
+        dispatch(ActionCreators.undo());
+
+        break;
+      case "redo":
+        dispatch(ActionCreators.redo());
+
         break;
     }
   };
