@@ -3,11 +3,12 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface BlockState {
   id: number;
   type: string;
+  content: string;
 }
 
 const initialState: BlockState[] = [];
 
-// Placeholder before integrating the db/api
+// Placeholder for block id generation before integrating the db/api
 const idCount = (function () {
   var counter = 0;
   return function () {
@@ -25,10 +26,11 @@ const BlocksSlice = createSlice({
   name: "blocks",
   initialState,
   reducers: {
-    addBlock(state, action: PayloadAction<string>) {
+    addBlock(state, action: PayloadAction<{ type: string; content: string }>) {
       const newBlock: BlockState = {
         id: idCount(),
-        type: action.payload,
+        type: action.payload.type,
+        content: action.payload.content,
       };
       state.push(newBlock);
     },

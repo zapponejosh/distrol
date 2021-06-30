@@ -5,8 +5,8 @@ import { ActionCreators } from "redux-undo";
 import { useHotkeys } from "react-hotkeys-hook";
 import {
   addBlock,
-  deleteBlock,
-  moveBlock,
+  // deleteBlock,
+  // moveBlock,
 } from "../features/blocks/blocksSlice";
 import TextBlock from "../components/Builder/TextBlock";
 import Headline from "../components/Builder/Headline";
@@ -14,7 +14,7 @@ import ImageText from "../components/Builder/ImageText";
 
 const BuilderPage = () => {
   const blocks = useAppSelector((state) => state.blocks.present);
-  const [newBlock, setNewBlock] = React.useState("");
+  const [newBlock, setNewBlock] = React.useState({ type: "", content: "" });
 
   const future = useAppSelector((state) => state.blocks.future);
   const past = useAppSelector((state) => state.blocks.past);
@@ -24,26 +24,7 @@ const BuilderPage = () => {
   const handleClick = () => {
     if (!newBlock) return;
     dispatch(addBlock(newBlock));
-    setNewBlock("");
-  };
-
-  const handleDelete = (e: React.MouseEvent) => {
-    const id = e.currentTarget.id;
-
-    dispatch(deleteBlock(Number(id)));
-  };
-
-  const handleMove = (index: number, direction: string) => {
-    switch (direction) {
-      case "up":
-        console.log(direction);
-        dispatch(moveBlock({ direction: -1, index }));
-        break;
-      case "down":
-        dispatch(moveBlock({ direction: 1, index }));
-        console.log(direction);
-        break;
-    }
+    setNewBlock({ type: "", content: "" });
   };
 
   // Undo/redo hotkeys
@@ -65,59 +46,28 @@ const BuilderPage = () => {
 
   return (
     <>
-      <h1>List of blocks</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>TYPE</th>
-          </tr>
-        </thead>
-        <tbody>
-          {blocks.map((b, i) => (
-            <tr key={b.id}>
-              <td>{b.id}</td>
-              <td>{b.type}</td>
-              <td>
-                <Button
-                  id={b.id.toString()}
-                  variant="solid"
-                  colorScheme="red"
-                  onClick={handleDelete}
-                >
-                  Delete
-                </Button>
-              </td>
-              <td>
-                <Button
-                  disabled={!!(i === 0)}
-                  onClick={(e) => handleMove(i, "up")}
-                >
-                  Up
-                </Button>
-                <Button
-                  disabled={!!(i === blocks.length - 1)}
-                  onClick={(e) => handleMove(i, "down")}
-                >
-                  Down
-                </Button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
       <Select
         m="20px 0"
         maxW="400px"
         variant="filled"
         placeholder="Block type..."
-        value={newBlock}
-        onChange={(e) => setNewBlock(e.target.value)}
+        value={newBlock.type}
+        onChange={(e) =>
+          setNewBlock((pre) => ({ ...pre, type: e.target.value }))
+        }
       >
         <option value="text">Text</option>
         <option value="image-caption">Image with caption</option>
         <option value="headline">Headline</option>
       </Select>
+      <Input
+        m="20px 0"
+        type="text"
+        value={newBlock.content}
+        onChange={(e) =>
+          setNewBlock((pre) => ({ ...pre, content: e.target.value }))
+        }
+      />
       <ButtonGroup m="20px 0">
         <Button onClick={handleClick}>+Add block</Button>
         <Button
@@ -137,11 +87,11 @@ const BuilderPage = () => {
       {blocks.map((b, i) => {
         switch (b.type) {
           case "text":
-            return <TextBlock key={i} />;
+            return <TextBlock key={i} content={b.content} position={i} />;
           case "headline":
-            return <Headline key={i} />;
+            return <Headline key={i} content={b.content} position={i} />;
           case "image-caption":
-            return <ImageText key={i} />;
+            return <ImageText key={i} content={b.content} position={i} />;
           default:
             return null;
         }
