@@ -13,13 +13,13 @@ const ImageText = ({
 
   return (
     <Flex maxW="1000px" justifyContent="space-between" mx="auto">
-      <Box maxW="600px" padding="6" boxShadow="lg" bg="gray">
+      <Box w="100%" maxW="600px" padding="6" boxShadow="lg" bg="gray">
         <Image
           borderRadius="full"
           boxSize="150px"
           src={content}
           alt="Block image"
-        />{" "}
+        />
         <SkeletonText mt="4" noOfLines={1} spacing="4" />
       </Box>
       <BlockControls position={position} />

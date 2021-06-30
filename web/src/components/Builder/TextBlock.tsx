@@ -14,7 +14,7 @@ const TextBlock = ({
       <Text w="100%" maxW="600px">
         {content}
       </Text>
-      ;
+
       <BlockControls position={position} />
     </Flex>
   );

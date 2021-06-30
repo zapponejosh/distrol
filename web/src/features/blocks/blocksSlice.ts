@@ -48,6 +48,20 @@ const BlocksSlice = createSlice({
         return arr;
       }
     },
+    editBlock(
+      state,
+      action: PayloadAction<{ content: string; index: number }>
+    ) {
+      const editingBlock = state[action.payload.index];
+      const UpdatedBlock: BlockState = {
+        type: editingBlock.type,
+        id: editingBlock.id,
+        content: action.payload.content,
+      };
+      const updatedState = [...state];
+      updatedState[action.payload.index] = UpdatedBlock;
+      return updatedState;
+    },
     deleteBlock(state, action: PayloadAction<number>) {
       const updatedState = state.filter(
         (block) => !(block.id === action.payload)
@@ -57,5 +71,6 @@ const BlocksSlice = createSlice({
   },
 });
 
-export const { addBlock, deleteBlock, moveBlock } = BlocksSlice.actions;
+export const { addBlock, deleteBlock, moveBlock, editBlock } =
+  BlocksSlice.actions;
 export default BlocksSlice.reducer;

@@ -10,6 +10,7 @@ import {
 
 const BlockControls = ({ position }: { position: number }) => {
   const block = useAppSelector((state) => state.blocks.present[position]);
+  const blockLength = useAppSelector((state) => state.blocks.present.length);
   // const [newBlock, setNewBlock] = React.useState({ type: "", content: "" });
 
   const dispatch = useAppDispatch();
@@ -51,7 +52,7 @@ const BlockControls = ({ position }: { position: number }) => {
         Up
       </Button>
       <Button
-        // disabled={!!(i === blocks.length - 1)} HOW do i do this now?
+        disabled={!!(position === blockLength - 1)}
         onClick={(e) => handleMove(position, "down")}
       >
         Down
